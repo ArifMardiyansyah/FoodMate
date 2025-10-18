@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'abhaya': ['Abhaya Libre', 'serif'], // Menambahkan Abhaya Libre
+        'abhaya': ['Abhaya Libre', 'serif'], 
       },
       colors: {
         yellow: {

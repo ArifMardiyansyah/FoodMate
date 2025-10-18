@@ -20,7 +20,7 @@
     <nav class="bg-white shadow-sm fixed top-0 left-0 right-0 w-full z-50">
         <div class="w-full px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <!-- Logo - Positioned more to the left -->
+                <!-- Logo -->
                 <div class="flex items-center">
                     <img src="{{ asset('images/logo/logo1.png') }}"
                          alt="FoodMate Logo"
@@ -31,18 +31,18 @@
                 <!-- Spacer to push navigation to the right -->
                 <div class="flex-1"></div>
 
-                <!-- Navigation Menu - White rounded container, positioned more to the right -->
-                <div class="hidden md:flex items-center bg-white rounded-full px-10 py-3 shadow-sm mr-6">
-                    <a href="#home" class="text-gray-900 font-medium px-5 text-lg">Home</a>
-                    <a href="#menu" class="text-gray-600 hover:text-gray-900 px-5 text-lg">Menu</a>
-                    <a href="#contact" class="text-gray-600 hover:text-gray-900 px-5 text-lg">Contact</a>
-                </div>
 
-                <!-- User Icon -->
-                <div class="bg-white text-gray-700 p-3 rounded-full shadow-sm border">
-                    <img src="{{ asset('images/icon/account.png') }}"
-                         alt="User Account"
-                         class="w-6 h-6">
+                <!-- User Icon with dropdown -->
+                <div class="relative">
+                    <button id="account-btn" type="button" class="bg-white text-gray-700 p-3 rounded-full shadow-sm border focus:outline-none focus:ring-2 focus:ring-orange-400">
+                        <img src="{{ asset('images/icon/account.png') }}"
+                             alt="User Account"
+                             class="w-6 h-6">
+                    </button>
+                    <div id="account-menu" class="hidden absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border z-50 overflow-hidden">
+                        <a href="/register" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Register</a>
+                        <a href="/login" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Login</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,8 +96,8 @@
 
                 <!-- Sisi Kanan - Food Images -->
                 <div class="hidden lg:block w-1/2 relative h-screen">
-                    <!-- Gambar 1 Nasi Uduk -->
-                    <div class="absolute transform rotate-2 z-20" style="top: 18%; right: -18px; width: 670px; height: 420px;">
+                    <!-- Gambar Utama Nasi Uduk -->
+                    <div class="absolute transform rotate-2 z-20" style="top: 18%; right: -18px; width: 750px; height: 480px;">
                         <div class="relative w-full h-full">
                             <img src="{{ asset('images/food/nasi_uduk.png') }}"
                                  alt="Nasi Uduk"
@@ -123,7 +123,6 @@
                         </div>
                     </div>
 
-                    <!-- Decorative circles removed as requested -->
                 </div>
             </div>
         </div>
@@ -142,7 +141,7 @@
                     </div>
 
                     <h3 class="text-lg font-bold text-black mb-2">Diskon</h3>
-                    <p class="text-sm text-black">Dapatkan diskon untuk pembelian 2 item sekaligus</p>
+                    <p class="text-sm text-black">Dapatkan diskon gratis biaya antar 1 item untuk pembelian 5 item sekaligus</p>
                 </div>
 
                 <!-- Cepat Tanpa Antri -->
@@ -573,7 +572,7 @@
     <div class="py-16 bg-white50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-600 mb-8">Testimoni Pembeli</h2>
+                <h2 class="text-3xl font-bold text-gray-600 mb-8">Testimoni Pembeli</h2>
             </div>
 
             <div class="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto">
@@ -753,5 +752,30 @@
             </div>
         </div>
     </footer>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const btn = document.getElementById('account-btn');
+        const menu = document.getElementById('account-menu');
+        if (!btn || !menu) return;
+
+        // Toggle on button click
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          menu.classList.toggle('hidden');
+        });
+
+        // Close on outside click
+        document.addEventListener('click', function () {
+          menu.classList.add('hidden');
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            menu.classList.add('hidden');
+          }
+        });
+      });
+    </script>
 </body>
 </html>
