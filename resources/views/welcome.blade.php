@@ -99,7 +99,7 @@
                     <!-- Gambar Utama Nasi Uduk -->
                     <div class="absolute transform rotate-2 z-20" style="top: 18%; right: -18px; width: 750px; height: 480px;">
                         <div class="relative w-full h-full">
-                            <img src="{{ asset('images/food/nasi_uduk.png') }}"
+                            <img src="{{ asset('images/food/mie_goreng.png') }}"
                                  alt="Nasi Uduk"
                                  class="w-full h-full object-contain drop-shadow-2xl">
                         </div>
@@ -108,14 +108,14 @@
                     <!-- Bawah Kiri Pecel Lele) -->
                     <div class="absolute transform -rotate-12 z-10" style="bottom: -1.5vh; right: 80px; width: 320px; height: 320px;">
                         <div class="relative w-full h-full">
-                            <img src="{{ asset('images/food/pecel_lele.png') }}"
+                            <img src="{{ asset('images/food/nasgor.png') }}"
                                  alt="Pecel Lele"
                                  class="w-full h-full object-contain drop-shadow-xl">
                         </div>
                     </div>
 
                     <!-- Bawah Kanan Sate Ayam) -->
-                    <div class="absolute transform rotate-6 z-15" style="bottom: -5.5vh; right: -350px; width: 420px; height: 360px;">
+                    <div class="absolute transform rotate-6 z-15" style="bottom: -1vh; right: -230px; width: 250px; height: 260px;">
                         <div class="relative w-full h-full">
                             <img src="{{ asset('images/food/sate_ayam.png') }}"
                                  alt="Sate Ayam"
@@ -214,9 +214,9 @@
                         <span class="text-lg font-bold">Rp. 15.000</span>
                     </div>
 
-                    <button class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition">
+                    <a href="/register" class="block w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition text-center">
                         Pesan
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Pecel Lele -->
@@ -256,9 +256,9 @@
                         <span class="text-lg font-bold">Rp. 15.000</span>
                     </div>
 
-                    <button class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition">
+                    <a href="/register" class="block w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition text-center">
                         Pesan
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Nasi Goreng -->
@@ -298,9 +298,9 @@
                         <span class="text-lg font-bold">Rp. 12.000</span>
                     </div>
 
-                    <button class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition">
+                    <a href="/register" class="block w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition text-center">
                         Pesan
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Sate Ayam -->
@@ -340,9 +340,9 @@
                         <span class="text-lg font-bold">Rp. 10.000</span>
                     </div>
 
-                    <button class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition">
+                    <a href="/register" class="block w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition text-center">
                         Pesan
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Gado Gado -->
@@ -382,9 +382,9 @@
                         <span class="text-lg font-bold">Rp. 10.000</span>
                     </div>
 
-                    <button class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition">
+                    <a href="/register" class="block w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition text-center">
                         Pesan
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Nasi Uduk -->
@@ -424,9 +424,9 @@
                         <span class="text-lg font-bold">Rp. 10.000</span>
                     </div>
 
-                    <button class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition">
+                    <a href="/register" class="block w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition text-center">
                         Pesan
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -477,9 +477,9 @@
                         <span class="text-lg font-bold">Rp. 5.000</span>
                     </div>
 
-                    <button class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition">
+                    <a href="/register" class="block w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition text-center">
                         Pesan
-                    </button>
+                    </a>
                 </div>
                 {{-- Susu Kedelai --}}
                 <div class="bg-white rounded-2xl p-4 shadow-lg">
@@ -518,15 +518,15 @@
                         <span class="text-lg font-bold">Rp. 10.000</span>
                     </div>
 
-                    <button class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition">
+                    <a href="/register" class="block w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition text-center">
                         Pesan
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Es Teh -->
                 <div class="bg-white rounded-2xl p-4 shadow-lg">
                     <div class="w-full h-70 bg-gray-100 rounded-xl mb-4 overflow-hidden">
-                        <img src="{{ asset('images/drink/es_teh.png') }}"
+                        <img src="{{ asset('images/drink/esteh.png') }}"
                              alt="Nasi Goreng"
                              class="w-full h-full object-cover">
                     </div>
@@ -560,9 +560,9 @@
                         <span class="text-lg font-bold">Rp. 10.000</span>
                     </div>
 
-                    <button class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition">
+                    <a href="/register" class="block w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition text-center">
                         Pesan
-                    </button>
+                    </a>
                 </div>                </div>
             </div>
         </div>

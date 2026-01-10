@@ -27,7 +27,8 @@
         </div>
 
         <!-- Form -->
-        <form action="/menu" method="GET" class="space-y-6">
+        <form action="/register" method="POST" class="space-y-6">
+            @csrf
 
             <!-- Name Input -->
             <div>
@@ -59,6 +60,22 @@
                     required
                 />
                 @error('email')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Phone Input -->
+            <div>
+                <label for="phone" class="block text-xs font-semibold uppercase text-gray-700 mb-2 tracking-wide">PHONE</label>
+                <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="08xxxxxxxxxx"
+                    value="{{ old('phone') }}"
+                    class="w-full bg-gray-100 rounded-lg py-4 px-5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:bg-white transition-all"
+                />
+                @error('phone')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>

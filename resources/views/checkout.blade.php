@@ -12,6 +12,9 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
+    <!-- Midtrans Snap Script -->
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50 min-h-screen font-inter pb-24">
@@ -139,39 +142,35 @@
                         </h3>
 
                         <div class="space-y-3">
+                            <!-- Midtrans Payment (Recommended) -->
+                            <label class="flex items-center p-4 border-2 border-[#f97316] bg-orange-50 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="payment_method" value="midtrans" checked class="w-5 h-5 text-[#f97316] focus:ring-[#f97316]">
+                                <div class="ml-4 flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <div class="font-semibold text-black">Pembayaran Online</div>
+                                        <span class="bg-[#f97316] text-white text-xs px-2 py-0.5 rounded-full">Rekomendasi</span>
+                                    </div>
+                                    <div class="text-sm text-gray-600 mt-1">Kartu Kredit, Transfer Bank, E-Wallet, QRIS</div>
+                                    <div class="flex gap-1 mt-2">
+                                        <span class="text-xs bg-white px-2 py-1 rounded border">💳 Credit Card</span>
+                                        <span class="text-xs bg-white px-2 py-1 rounded border">🏦 Bank</span>
+                                        <span class="text-xs bg-white px-2 py-1 rounded border">📱 E-Wallet</span>
+                                    </div>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-[#f97316]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                            </label>
+
                             <!-- COD -->
                             <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-[#f97316] transition-all">
-                                <input type="radio" name="payment_method" value="cod" checked class="w-5 h-5 text-[#f97316] focus:ring-[#f97316]">
+                                <input type="radio" name="payment_method" value="cod" class="w-5 h-5 text-[#f97316] focus:ring-[#f97316]">
                                 <div class="ml-4 flex-1">
                                     <div class="font-semibold text-black">Cash on Delivery (COD)</div>
                                     <div class="text-sm text-gray-500">Bayar saat pesanan tiba</div>
                                 </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                            </label>
-
-                            <!-- Transfer Bank -->
-                            <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-[#f97316] transition-all">
-                                <input type="radio" name="payment_method" value="transfer" class="w-5 h-5 text-[#f97316] focus:ring-[#f97316]">
-                                <div class="ml-4 flex-1">
-                                    <div class="font-semibold text-black">Transfer Bank</div>
-                                    <div class="text-sm text-gray-500">BCA, Mandiri, BNI, BRI</div>
-                                </div>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                                </svg>
-                            </label>
-
-                            <!-- E-Wallet -->
-                            <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-[#f97316] transition-all">
-                                <input type="radio" name="payment_method" value="ewallet" class="w-5 h-5 text-[#f97316] focus:ring-[#f97316]">
-                                <div class="ml-4 flex-1">
-                                    <div class="font-semibold text-black">E-Wallet</div>
-                                    <div class="text-sm text-gray-500">GoPay, OVO, Dana, ShopeePay</div>
-                                </div>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                                 </svg>
                             </label>
                         </div>
@@ -238,47 +237,7 @@
         </div>
     </section>
 
-    <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 left-0 w-full bg-white shadow-lg rounded-t-3xl z-50 font-poppins">
-        <div class="max-w-md mx-auto px-8 py-5">
-            <div class="flex justify-between items-center gap-10">
-                <!-- Home -->
-                <a href="/menu" class="flex items-center justify-center group transition-transform hover:scale-110">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fcae80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                        <polyline points="9 22 9 12 15 12 15 22"/>
-                    </svg>
-                </a>
-
-                <!-- Profile -->
-                <a href="#" class="flex items-center justify-center group transition-transform hover:scale-110">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fcae80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-                        <circle cx="12" cy="7" r="4"/>
-                    </svg>
-                </a>
-
-                <!-- Cart -->
-                <a href="/cart" class="flex items-center justify-center group transition-transform hover:scale-110">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fcae80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="8" cy="21" r="1"/>
-                        <circle cx="19" cy="21" r="1"/>
-                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-                    </svg>
-                </a>
-
-                <!-- Message/Chat (Active) -->
-                <a href="#" class="flex flex-col items-center gap-2 group transition-transform hover:scale-110">
-                    <div class="px-6 py-3 bg-[#fff7ed] rounded-2xl flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                        </svg>
-                    </div>
-                    <span class="text-sm font-bold text-black">Checkout</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+    @include('layouts.partials.bottom-nav')
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -486,7 +445,6 @@
                 phone: phone,
                 address: address,
                 notes: notes,
-                payment_method: paymentMethod,
                 latitude: latitude,
                 longitude: longitude
             };
@@ -497,7 +455,69 @@
             button.textContent = 'Memproses...';
             button.disabled = true;
 
-            // Send request
+            // Check payment method
+            if (paymentMethod === 'midtrans') {
+                // Process with Midtrans
+                processMidtransPayment(data, button, originalText);
+            } else {
+                // Process with COD (original flow)
+                processCODPayment(data, button, originalText);
+            }
+        }
+
+        function processMidtransPayment(data, button, originalText) {
+            fetch('/payment/midtrans/create-token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success && result.snap_token) {
+                    // Open Midtrans Snap popup
+                    window.snap.pay(result.snap_token, {
+                        onSuccess: function(result) {
+                            console.log('Payment success:', result);
+                            window.location.href = '/payment/midtrans/finish?order_id=' + result.order_id;
+                        },
+                        onPending: function(result) {
+                            console.log('Payment pending:', result);
+                            showNotification('Pembayaran pending, silakan selesaikan pembayaran', 'info');
+                            button.textContent = originalText;
+                            button.disabled = false;
+                        },
+                        onError: function(result) {
+                            console.log('Payment error:', result);
+                            showNotification('Pembayaran gagal', 'error');
+                            button.textContent = originalText;
+                            button.disabled = false;
+                        },
+                        onClose: function() {
+                            console.log('Payment popup closed');
+                            button.textContent = originalText;
+                            button.disabled = false;
+                        }
+                    });
+                } else {
+                    alert('Gagal membuat transaksi: ' + (result.message || 'Unknown error'));
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat memproses pembayaran');
+                button.textContent = originalText;
+                button.disabled = false;
+            });
+        }
+
+        function processCODPayment(data, button, originalText) {
+            data.payment_method = 'cod';
+            
             fetch('/checkout/process', {
                 method: 'POST',
                 headers: {
@@ -509,7 +529,6 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Show success message and redirect to order completed
                     showSuccessModal(data.order_id, data.total, data.redirect_url);
                 } else {
                     alert('Gagal membuat pesanan: ' + data.message);

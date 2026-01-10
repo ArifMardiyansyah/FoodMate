@@ -11,10 +11,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="bg-white min-h-screen font-abhaya pb-32" x-data="cartApp()" x-init="init()">
+<body class="bg-gradient-to-br from-orange-50 via-white to-yellow-50 min-h-screen font-abhaya pb-32" x-data="cartApp()" x-init="init()">
 
     <!-- Header -->
-    <header class="bg-white px-6 lg:px-12 py-6">
+    <header class="bg-white/80 backdrop-blur-sm px-6 lg:px-12 py-6 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-4">
                 <!-- Back Button -->
@@ -27,12 +27,13 @@
                 <h1 class="text-3xl font-bold text-[#F6A406]">FoodMate</h1>
             </div>
 
-            <!-- Profile Icon -->
-            <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-            </div>
+            <!-- Logout Button -->
+            <form action="/logout" method="POST">
+                @csrf
+                <button type="submit" class="bg-[#F6A406] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#F6A406] transition-colors">
+                    Logout
+                </button>
+            </form>
         </div>
     </header>
 
@@ -40,52 +41,54 @@
     <section class="bg-white px-6 lg:px-12 py-12">
         <div class="max-w-4xl mx-auto">
             <!-- Page Title -->
-            <div class="mb-8">
-                <h2 class="text-2xl font-medium text-gray-400 mb-2">Keranjang</h2>
-                <h1 class="text-5xl font-bold text-black">Order Details</h1>
+            <div class="mb-8 text-center">
+                <h2 class="text-2xl font-medium text-gray-400 mb-2">🛒 Keranjang Belanja</h2>
+                <h1 class="text-5xl font-bold bg-gradient-to-r from-[#F6A406] to-[#F08C00] bg-clip-text text-transparent">Order Details</h1>
             </div>
 
             <!-- Cart Items -->
             @if(empty($cartItems) || count($cartItems) == 0)
-            <div class="text-center py-16">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 mx-auto text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <h3 class="text-2xl font-bold text-gray-400 mb-2">Keranjang Kosong</h3>
-                <p class="text-gray-500 mb-6">Belum ada item di keranjang Anda</p>
-                <a href="/menu" class="inline-block bg-[#F6A406] text-white font-semibold py-3 px-8 rounded-xl hover:bg-[#F6A406] transition-colors">
-                    Mulai Belanja
+            <div class="text-center py-16 bg-white rounded-3xl shadow-xl p-12">
+                <div class="w-32 h-32 mx-auto mb-6 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-[#F6A406]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-3xl font-bold text-gray-700 mb-3">Keranjang Kosong</h3>
+                <p class="text-gray-500 mb-8 text-lg">Belum ada item di keranjang Anda</p>
+                <a href="/menu" class="inline-block bg-gradient-to-r from-[#F6A406] to-[#F08C00] text-white font-bold py-4 px-10 rounded-2xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                    🍽️ Mulai Belanja
                 </a>
             </div>
             @else
-            <div class="space-y-6 mb-8">
+            <div class="space-y-5 mb-8">
                 @foreach($cartItems ?? [] as $item)
-                <div class="bg-white rounded-xl shadow-lg p-6 flex items-center gap-6" data-cart-item>
+                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 flex items-center gap-6 border border-orange-100" data-cart-item>
                     <!-- Product Image -->
-                    <div class="w-24 h-24 bg-gray-200 rounded-xl overflow-hidden flex-shrink-0">
-                        <img src="{{ asset($item['image'] ?? 'images/food/default.png') }}" alt="{{ $item['name'] }}" class="w-full h-full object-cover">
+                    <div class="w-28 h-28 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-2xl overflow-hidden flex-shrink-0 shadow-md">
+                        <img src="{{ asset($item['image'] ?? 'images/food/default.png') }}" alt="{{ $item['name'] }}" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
                     </div>
 
                     <!-- Product Info -->
                     <div class="flex-1">
-                        <h3 class="text-xl font-bold text-black mb-1">{{ $item['name'] }}</h3>
-                        <p class="text-lg text-[#F6A406] font-semibold">{{ $item['price'] }}</p>
+                        <h3 class="text-xl font-bold text-black mb-2">{{ $item['name'] }}</h3>
+                        <p class="text-xl text-[#F6A406] font-bold">{{ $item['price'] }}</p>
                     </div>
 
                     <!-- Quantity Controls -->
-                    <div class="flex items-center gap-4">
-                        <button @click="decreaseQuantity('{{ $item['id'] }}', {{ $item['quantity'] ?? 1 }})" class="w-10 h-10 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-lg transition-colors flex items-center justify-center" data-decrease="{{ $item['id'] }}">
+                    <div class="flex items-center gap-3 bg-gray-50 rounded-xl p-2">
+                        <button @click="decreaseQuantity('{{ $item['id'] }}', {{ $item['quantity'] ?? 1 }})" class="w-10 h-10 bg-white hover:bg-[#F6A406] hover:text-white text-gray-700 font-bold rounded-lg transition-all duration-300 flex items-center justify-center shadow-sm" data-decrease="{{ $item['id'] }}">
                             −
                         </button>
-                        <span x-text="quantities['{{ $item['id'] }}'] ?? {{ $item['quantity'] ?? 1 }}" class="text-xl font-bold text-black min-w-[30px] text-center"></span>
-                        <button @click="increaseQuantity('{{ $item['id'] }}', {{ $item['quantity'] ?? 1 }})" class="w-10 h-10 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-lg transition-colors flex items-center justify-center" data-increase="{{ $item['id'] }}">
+                        <span x-text="quantities['{{ $item['id'] }}'] ?? {{ $item['quantity'] ?? 1 }}" class="text-xl font-bold text-black min-w-[40px] text-center"></span>
+                        <button @click="increaseQuantity('{{ $item['id'] }}', {{ $item['quantity'] ?? 1 }})" class="w-10 h-10 bg-white hover:bg-[#F6A406] hover:text-white text-gray-700 font-bold rounded-lg transition-all duration-300 flex items-center justify-center shadow-sm" data-increase="{{ $item['id'] }}">
                             +
                         </button>
                     </div>
 
                     <!-- Delete Button -->
-                    <button @click="removeItem('{{ $item['id'] }}', $event)" class="w-10 h-10 bg-red-100 hover:bg-red-200 text-red-600 font-bold rounded-lg transition-colors flex items-center justify-center" data-remove="{{ $item['id'] }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <button @click="removeItem('{{ $item['id'] }}', $event)" class="w-12 h-12 bg-red-50 hover:bg-red-500 hover:text-white text-red-600 font-bold rounded-xl transition-all duration-300 flex items-center justify-center shadow-sm" data-remove="{{ $item['id'] }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                     </button>
@@ -97,87 +100,47 @@
             @endif
 
             @if(!empty($cartItems) && count($cartItems) > 0)
-            <div class="bg-[#F6A406] text-black rounded-xl p-6 mb-6">
-                <div class="space-y-3">
-                    <div class="flex justify-between text-lg font-bold">
-                        <span>Jumlah</span>
+            <div class="bg-gradient-to-br from-[#F6A406] to-[#F08C00] text-white rounded-2xl p-8 mb-6 shadow-2xl">
+                <h3 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                    Ringkasan Pesanan
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between text-lg font-semibold bg-white/10 rounded-lg p-3">
+                        <span>Jumlah Item</span>
                         <span data-cart-quantity>{{ $totalQuantity ?? 0 }}</span>
                     </div>
-                    <div class="flex justify-between text-lg">
+                    <div class="flex justify-between text-lg bg-white/10 rounded-lg p-3">
                         <span>Sub-Total</span>
                         <span data-cart-subtotal>Rp. {{ number_format($subtotal ?? 0) }}</span>
                     </div>
-                    <div class="flex justify-between text-lg">
-                        <span>Delivery Charge</span>
+                    <div class="flex justify-between text-lg bg-white/10 rounded-lg p-3">
+                        <span>Biaya Pengiriman</span>
                         <span data-cart-delivery>Rp. {{ number_format(($deliveryCharge ?? 5000)) }}</span>
                     </div>
-                    <div class="flex justify-between text-lg">
-                        <span>Discount</span>
-                        <span data-cart-discount>-Rp. {{ number_format($discount ?? 0) }}</span>
+                    <div class="flex justify-between text-lg bg-white/10 rounded-lg p-3">
+                        <span>Diskon</span>
+                        <span data-cart-discount class="text-green-300">-Rp. {{ number_format($discount ?? 0) }}</span>
                     </div>
-                    <hr class="border-black/20">
-                    <div class="flex justify-between text-2xl font-bold">
-                        <span>Total</span>
+                    <hr class="border-white/30 my-4">
+                    <div class="flex justify-between text-2xl font-bold bg-white/20 rounded-xl p-4">
+                        <span>Total Pembayaran</span>
                         <span data-cart-total>Rp. {{ number_format($total ?? 0) }}</span>
                     </div>
                 </div>
             </div>
 
             <!-- Place Order Button -->
-            <a href="/checkout" class="block w-full bg-white text-[#F6A406] font-semibold py-3 px-6 rounded-lg border-2 border-[#F6A406] hover:bg-[#fff7ed] transition-colors text-center">
-                Lanjut ke Pembayaran
+            <a href="/checkout" class="block w-full bg-white text-[#F6A406] font-bold text-lg py-5 px-6 rounded-2xl border-2 border-[#F6A406] hover:bg-gradient-to-r hover:from-[#F6A406] hover:to-[#F08C00] hover:text-white hover:border-transparent transition-all duration-300 text-center shadow-lg hover:shadow-2xl hover:scale-105">
+                🚀 Lanjut ke Pembayaran
             </a>
             @endif
         </div>
     </section>
 
-    <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 left-0 w-full bg-white shadow-lg rounded-t-3xl z-50 font-poppins">
-        <div class="max-w-md mx-auto px-8 py-5">
-            <div class="flex justify-between items-center gap-10">
-                <!-- Home -->
-                <a href="/menu" class="flex items-center justify-center group transition-transform hover:scale-110">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fcae80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                        <polyline points="9 22 9 12 15 12 15 22"/>
-                    </svg>
-                </a>
-
-                <!-- History -->
-                <a href="/history" class="relative flex items-center justify-center group transition-transform hover:scale-110">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fcae80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                    </svg>
-                    <!-- Dot Notification -->
-                    <div class="absolute top-0 right-0 w-3 h-3 bg-[#F6A406] rounded-full"></div>
-                </a>
-
-                <!-- Cart with Badge (Active) -->
-                <a href="/cart" class="flex flex-col items-center gap-2 group transition-transform hover:scale-110">
-                    <div class="px-6 py-3 bg-[#fff7ed] rounded-2xl flex items-center justify-center relative">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F6A406" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="8" cy="21" r="1"/>
-                            <circle cx="19" cy="21" r="1"/>
-                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-                        </svg>
-                        <!-- Badge Notification -->
-                        <div class="absolute -top-1 -right-1 min-w-[20px] h-5 bg-[#F6A406] rounded-full flex items-center justify-center px-1.5" data-cart-badge-wrapper>
-                            <span class="text-xs font-bold text-white" data-cart-badge>{{ $cartCount ?? 0 }}</span>
-                        </div>
-                    </div>
-                    <span class="text-sm font-bold text-black">Cart</span>
-                </a>
-
-                <!-- Profile -->
-                <a href="/profile" class="flex items-center justify-center group transition-transform hover:scale-110">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fcae80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-                        <circle cx="12" cy="7" r="4"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </nav>
+    @include('layouts.partials.bottom-nav')
 
     <script>
         function cartApp() {

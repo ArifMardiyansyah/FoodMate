@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class OrderFeedbackController extends Controller
@@ -11,7 +12,15 @@ class OrderFeedbackController extends Controller
      */
     public function show()
     {
-        return view('order.completed');
+        $order = null;
+
+        if ($lastOrderId = session()->pull('last_order_id')) {
+            $order = Order::with('items')->find($lastOrderId);
+        }
+
+        return view('order.completed', [
+            'order' => $order,
+        ]);
     }
 
     /**
@@ -25,15 +34,18 @@ class OrderFeedbackController extends Controller
             'feedback' => 'nullable|string|max:500',
         ]);
 
-        // Here you can save the feedback to database if needed
-        // Example:
-        // OrderFeedback::create([
-        //     'order_id' => auth()->user()->lastOrder()->id,
-        //     'rating' => $validated['rating'],
-        //     'feedback' => $validated['feedback'],
-        // ]);
+        $order = Order::where('session_id', session()->getId())
+            ->latest()
+            ->first();
 
-        // Return success response
+        if ($order) {
+            $order->update([
+                'feedback_rating' => $validated['rating'],
+                'feedback_comment' => $validated['feedback'] ?? null,
+                'feedback_submitted_at' => now(),
+            ]);
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Thank you for your feedback!'

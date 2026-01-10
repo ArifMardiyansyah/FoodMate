@@ -2,45 +2,77 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class HistoryController extends Controller
 {
-    public function index()
+    public function confirmOrder(Request $request, $id)
     {
-        // Sample order history data - in a real app, this would come from database
-        $orderHistory = [
-            [
-                'id' => 'ORD-001',
-                'date' => '2024-01-15',
-                'status' => 'completed',
-                'total' => 45000,
-                'items' => [
-                    ['name' => 'Nasi Uduk', 'quantity' => 2, 'price' => 15000],
-                    ['name' => 'Es Teh', 'quantity' => 1, 'price' => 15000]
-                ]
-            ],
-            [
-                'id' => 'ORD-002',
-                'date' => '2024-01-12',
-                'status' => 'completed',
-                'total' => 32000,
-                'items' => [
-                    ['name' => 'Mie Goreng', 'quantity' => 1, 'price' => 12000],
-                    ['name' => 'Pecel Lele', 'quantity' => 1, 'price' => 20000]
-                ]
-            ],
-            [
-                'id' => 'ORD-003',
-                'date' => '2024-01-10',
-                'status' => 'completed',
-                'total' => 18000,
-                'items' => [
-                    ['name' => 'Sate Ayam', 'quantity' => 1, 'price' => 18000]
-                ]
-            ]
+        $order = Order::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->where('status', 'completed')
+            ->firstOrFail();
+
+        // Update status menjadi confirmed atau tambahkan flag
+        $order->update([
+            'is_confirmed' => true,
+            'confirmed_at' => now(),
+        ]);
+
+        return redirect()->back()->with('success', 'Pesanan telah dikonfirmasi. Terima kasih!');
+    }
+
+    public function index(Request $request)
+    {
+        $userId = auth()->id();
+        
+        // Query dasar untuk mendapatkan orders berdasarkan user_id
+        $query = Order::with('items')->where('user_id', $userId);
+
+        // Filter berdasarkan status jika ada
+        if ($request->has('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+
+        // Filter berdasarkan tanggal jika ada
+        if ($request->has('date_from') && $request->date_from) {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+
+        if ($request->has('date_to') && $request->date_to) {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        // Pencarian berdasarkan order number atau nama produk
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('order_number', 'like', "%{$search}%")
+                  ->orWhere('customer_name', 'like', "%{$search}%")
+                  ->orWhereHas('items', function ($q) use ($search) {
+                      $q->where('product_name', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Sorting
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortOrder = $request->get('sort_order', 'desc');
+        $query->orderBy($sortBy, $sortOrder);
+
+        $orders = $query->paginate(10)->withQueryString();
+
+        // Statistik untuk dashboard
+        $stats = [
+            'total_orders' => Order::where('user_id', $userId)->count(),
+            'total_spent' => Order::where('user_id', $userId)->sum('total'),
+            'completed_orders' => Order::where('user_id', $userId)->where('status', 'completed')->count(),
         ];
 
-        return view('history', compact('orderHistory'));
+        return view('history', [
+            'orders' => $orders,
+            'stats' => $stats,
+        ]);
     }
 }

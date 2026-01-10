@@ -21,16 +21,22 @@
             <p class="text-[15px] font-semibold" style="color: #F7941D;">Nikmat Diantar</p>
         </div>
 
-        <form action="/menu" method="GET" class="space-y-5">
+        <form action="/login" method="POST" class="space-y-5">
+            @csrf
             <div>
                 <label for="email" class="block text-xs font-semibold uppercase text-black mb-2">Email</label>
                 <input
                     id="email"
                     type="email"
                     name="email"
+                    value="{{ old('email') }}"
                     placeholder="example@gmail.com"
                     class="w-full bg-[#F8FAFC] rounded-xl py-3 px-4 text-sm text-black placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#F7941D]"
+                    required
                 />
+                @error('email')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>
@@ -42,6 +48,7 @@
                         name="password"
                         placeholder="••••••••"
                         class="w-full bg-[#F8FAFC] rounded-xl py-3 px-4 pr-12 text-sm text-black placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#F7941D]"
+                        required
                     />
                     <button
                         type="button"
@@ -55,11 +62,14 @@
                         </svg>
                     </button>
                 </div>
+                @error('password')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="flex items-center justify-between text-sm">
                 <label class="flex items-center space-x-2">
-                    <input type="checkbox" class="rounded border-gray-300 text-[#F7941D] focus:ring-[#F7941D]" />
+                    <input type="checkbox" name="remember" class="rounded border-gray-300 text-[#F7941D] focus:ring-[#F7941D]" />
                     <span class="text-[#6B7280]">Remember me</span>
                 </label>
                 <a href="#" class="font-medium" style="color: #F7941D;">Forgot Password</a>

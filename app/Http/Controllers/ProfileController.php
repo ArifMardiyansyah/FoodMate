@@ -3,53 +3,78 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
     public function index()
     {
-        return view('profile');
+        $user = Auth::user();
+
+        // Get total orders count
+        $totalOrders = $user?->orders()->count() ?? 0;
+
+        // Get total spending (sum of all completed orders)
+        $totalSpending = $user?->orders()
+            ->whereIn('status', ['completed', 'delivered'])
+            ->sum('total') ?? 0;
+
+        return view('profile', [
+            'user' => $user,
+            'profilePhoto' => $user?->profile_photo_path,
+            'profilePhone' => $user?->phone,
+            'totalOrders' => $totalOrders,
+            'totalSpending' => $totalSpending,
+        ]);
     }
 
     public function edit()
     {
-        return view('edit-profile');
+        $user = Auth::user();
+
+        return view('edit-profile', [
+            'user' => $user,
+            'profilePhoto' => $user?->profile_photo_path,
+            'profilePhone' => $user?->phone,
+        ]);
     }
 
     public function update(Request $request)
     {
-        $request->validate([
+        $user = $request->user();
+
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user?->id)],
+            'phone' => 'nullable|string|max:20',
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 
-        // Store profile data in session (in a real app, this would be saved to database)
-        session([
-            'profile_name' => $request->name,
-            'profile_email' => $request->email,
-            'profile_phone' => $request->phone,
+        if (!$user) {
+            return redirect('/profile')->with('error', 'User tidak ditemukan');
+        }
+
+        // Update basic fields
+        $user->fill([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
         ]);
 
-        // Handle profile photo upload
+        // Handle photo upload
         if ($request->hasFile('profile_photo')) {
             // Delete old photo if exists
-            if (session('profile_photo')) {
-                $oldPath = public_path('storage/' . session('profile_photo'));
-                if (file_exists($oldPath)) {
-                    unlink($oldPath);
-                }
+            if ($user->profile_photo_path && Storage::disk('public')->exists($user->profile_photo_path)) {
+                Storage::disk('public')->delete($user->profile_photo_path);
             }
 
-            // Store new photo in public/storage/profile-photos
-            $file = $request->file('profile_photo');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('storage/profile-photos'), $filename);
-            $photoPath = 'profile-photos/' . $filename;
-            session(['profile_photo' => $photoPath]);
+            $path = $request->file('profile_photo')->store('profile-photos', 'public');
+            $user->profile_photo_path = $path;
         }
+
+        $user->save();
 
         return redirect('/profile')->with('success', 'Profil berhasil diperbarui!');
     }
